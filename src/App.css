@@ -1,3 +1,16 @@
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: system-ui, 'Helevetica Neue', Arial, sans-serif;
+}
+
 .app {
   display: flex;
   flex-direction: column;
@@ -5,55 +18,81 @@
 }
 
 header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
+  border-bottom: 3px solid black;
+}
+
+.cb-block {
+  flex: 1;
+  padding: 0.5rem;
+}
+
+.cb-block__title {
+  display: block;
+  text-align: center;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
 }
 
 /* Name */
-.cb__name input {
+.cb-block__name {
+  cursor: pointer;
+}
+.cb-block__name input {
+  display: block;
   background: transparent;
   border: none;
-  width: 100px;
+  width: 90%;
+  margin: auto;
+  text-align: center;
   text-overflow: ellipsis;
-  margin-left: 10px;
   font-size: 1rem;
   font-weight: bold;
-  padding-left: 10px;
 }
-.cb__name input:focus {
+.cb-block__name input:focus {
   background: white;
 }
 
 /* Colors */
-.cb__colors {
-  background: black;
-  color: white;
+.cb-block__colors {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 10px;
+  max-width: 34%;
 }
-.cb__colors input {
+.cb-block__colors input {
   display: none;
 }
-/* color block */
-.cb__colors span {
+.cb-color-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+.cb-color-square {
   content: '';
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 1.5rem;
+  height: 1.5rem;
   margin: 5px 15px;
+  border: 2px solid black;
   cursor: pointer;
   transition: 0.3s;
 }
-.cb__colors span:hover {
+.cb-color-square:hover {
   transform: rotate(45deg);
 }
 
-/* Position */
-.cb__position {
-  padding: 10px 0;
-  min-width: 100px;
-  text-align: center;
+/* Coords */
+.cb-block__coords {
+  display: flex;
+  justify-content: space-evenly;
 }

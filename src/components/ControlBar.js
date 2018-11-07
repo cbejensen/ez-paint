@@ -3,13 +3,12 @@ import React from 'react'
 export default class ControlBar extends React.Component {
   constructor(props) {
     super(props)
-    this.colors = props.colors || ['coral', 'aqua', 'lightgreen']
     this.controlBarRef = React.createRef()
     this.state = {
       name: 'Untitled',
-      color: this.colors[0],
-      mouseX: null,
-      mouseY: null
+      color: this.props.colors[0],
+      mouseX: 0,
+      mouseY: 0
     }
   }
   componentDidMount() {
@@ -41,34 +40,52 @@ export default class ControlBar extends React.Component {
   }
   render() {
     return (
-      <header ref={this.controlBarRef} style={{ background: this.state.color }}>
-        <label className="cb__name">
-          Name:
+      <header ref={this.controlBarRef} style={this.props.style}>
+        <label className="cb-block cb-block__name">
+          <span className="cb-block__title">Name</span>
           <input
             type="text"
             value={this.state.name}
             onChange={this.handleNameChange}
           />
         </label>
-        <div className="cb__colors">
-          Color:
-          {this.colors.map(color => (
-            <label key={color}>
-              <input
-                type="radio"
-                value={color}
-                checked={this.state.color === color}
-                onChange={this.handleColorChange}
-                className="color-radio"
-              />
-              <span style={{ background: color }} />
-            </label>
-          ))}
+        <div
+          className="cb-block cb-block__colors"
+          style={{ background: this.state.color }}
+        >
+          <span className="cb-block__title">Color</span>
+          <div className="cb-color-row">
+            {this.props.colors.map(color => (
+              <label key={color}>
+                <input
+                  type="radio"
+                  value={color}
+                  checked={this.state.color === color}
+                  onChange={this.handleColorChange}
+                  className="color-radio"
+                />
+                <span
+                  className="cb-color-square"
+                  style={{ background: color }}
+                />
+              </label>
+            ))}
+          </div>
         </div>
-        <div className="cb__position">
-          {this.state.mouseX} {this.state.mouseY}
+        <div className="cb-block cb-block__coords">
+          <div className="cb-block__coord">
+            <span className="cb-block__title">X</span>
+            {this.state.mouseX}
+          </div>
+          <div className="cb-block__coord">
+            <span className="cb-block__title">Y</span>
+            {this.state.mouseY}
+          </div>
         </div>
       </header>
     )
   }
+}
+ControlBar.defaultProps = {
+  colors: ['coral', 'aqua', 'lightgreen', 'black']
 }

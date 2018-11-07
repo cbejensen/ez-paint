@@ -8,7 +8,7 @@ class App extends React.Component {
     return (
       <div className="app">
         <ControlBar />
-        <Canvas style={{ flex: 1 }} />
+        <Canvas />
       </div>
     )
   }
