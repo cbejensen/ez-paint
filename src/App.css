@@ -61,10 +61,12 @@ header {
   height: 1.5rem;
   margin: 5px 15px;
   border: 2px solid black;
-  cursor: pointer;
   transition: 0.3s;
 }
-.color-picker span:hover {
+.color-picker label {
+  cursor: pointer;
+}
+.color-picker label:hover span {
   transform: rotate(45deg);
 }
 .color-picker input:checked + span {
@@ -95,11 +97,11 @@ canvas {
   left: 50%;
   transform: translateX(-50%);
   text-transform: lowercase;
+  cursor: pointer;
 }
 .clear-btn:hover {
   background: black;
   color: white;
-  cursor: pointer;
 }
 
 @media (max-width: 500px) {
