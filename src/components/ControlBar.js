@@ -1,6 +1,5 @@
 import React from 'react'
 import TopBar from './TopBar'
-import ColorBar from './ColorBar'
 
 export default class ControlBar extends React.Component {
   constructor(props) {
