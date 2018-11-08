@@ -1,4 +1,6 @@
 import React from 'react'
+import TopBar from './TopBar'
+import ColorBar from './ColorBar'
 
 export default class ControlBar extends React.Component {
   constructor(props) {
@@ -6,7 +8,7 @@ export default class ControlBar extends React.Component {
     this.controlBarRef = React.createRef()
     this.state = {
       name: 'Untitled',
-      color: this.props.colors[0],
+      activeColor: this.props.colors[0],
       mouseX: 0,
       mouseY: 0
     }
@@ -27,12 +29,13 @@ export default class ControlBar extends React.Component {
     this.setState({ name: e.target.value })
   }
   handleColorChange = e => {
-    this.setState({ color: e.target.value })
+    console.log('got it')
+    this.setState({ activeColor: e.target.value })
   }
   handleMouseMove = e => {
     this.setState({
       mouseX: e.pageX,
-      mouseY: e.pageY - this.controlBarRef.current.clientHeight
+      mouseY: e.pageY - this.controlBarRef.current.offsetHeight
     })
   }
   setDocumentTitle = name => {
@@ -41,46 +44,25 @@ export default class ControlBar extends React.Component {
   render() {
     return (
       <header ref={this.controlBarRef} style={this.props.style}>
-        <label className="cb-block cb-block__name">
-          <span className="cb-block__title">Name</span>
-          <input
-            type="text"
-            value={this.state.name}
-            onChange={this.handleNameChange}
-          />
-        </label>
+        <TopBar coords={[this.state.mouseX, this.state.mouseY]}>
+          <input value={this.state.name} onChange={this.handleNameChange} />
+        </TopBar>
         <div
-          className="cb-block cb-block__colors"
-          style={{ background: this.state.color }}
+          className="color-bar"
+          style={{ background: this.state.activeColor }}
         >
-          <span className="cb-block__title">Color</span>
-          <div className="cb-color-row">
-            {this.props.colors.map(color => (
-              <label key={color}>
-                <input
-                  type="radio"
-                  value={color}
-                  checked={this.state.color === color}
-                  onChange={this.handleColorChange}
-                  className="color-radio"
-                />
-                <span
-                  className="cb-color-square"
-                  style={{ background: color }}
-                />
-              </label>
-            ))}
-          </div>
-        </div>
-        <div className="cb-block cb-block__coords">
-          <div className="cb-block__coord">
-            <span className="cb-block__title">X</span>
-            {this.state.mouseX}
-          </div>
-          <div className="cb-block__coord">
-            <span className="cb-block__title">Y</span>
-            {this.state.mouseY}
-          </div>
+          {this.props.colors.map((color, i) => (
+            <label key={i}>
+              <input
+                name="color"
+                type="radio"
+                value={color}
+                checked={this.state.activeColor === color}
+                onChange={this.handleColorChange}
+              />
+              <span style={{ background: color }} />
+            </label>
+          ))}
         </div>
       </header>
     )
