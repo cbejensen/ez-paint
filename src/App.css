@@ -51,7 +51,8 @@ header {
   padding: 10px;
 }
 .color-picker input {
-  display: none;
+  opacity: 0;
+  position: absolute;
 }
 .color-picker span {
   content: '';
