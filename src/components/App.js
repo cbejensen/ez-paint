@@ -6,10 +6,9 @@ export default class ezDraw extends React.Component {
   constructor(props) {
     super(props)
     this.headerRef = React.createRef()
-    this.colors = ['coral', 'aqua', 'lightgreen', 'black']
     this.state = {
       name: 'Untitled',
-      activeColor: this.colors[0],
+      activeColorIndex: 0,
       mouseCoords: [0, 0]
     }
   }
@@ -25,8 +24,8 @@ export default class ezDraw extends React.Component {
   componentWillUnmount() {
     document.removeEventListener('mousemove', this.handleMouseMove)
   }
-  handleChange = (attr, e) => {
-    this.setState({ [attr]: e.target.value })
+  handleChange = (attr, val) => {
+    this.setState({ [attr]: val })
   }
   handleMouseMove = e => {
     this.setState({
@@ -37,6 +36,7 @@ export default class ezDraw extends React.Component {
     document.title = `EZ Paint - ${name}`
   }
   render() {
+    const activeColor = this.props.colors[this.state.activeColorIndex]
     // canvas Y coordinate needs to be adjusted to
     // account for header height
     let canvasY = this.state.mouseCoords[1]
@@ -49,18 +49,18 @@ export default class ezDraw extends React.Component {
           <label className="header-name">
             <input
               value={this.state.name}
-              onChange={e => this.handleChange('name', e)}
+              onChange={e => this.handleChange('name', e.target.value)}
             />
           </label>
           <div className="color-picker">
-            {this.colors.map((color, i) => (
+            {this.props.colors.map((color, i) => (
               <label key={i}>
                 <input
                   name="color"
                   type="radio"
                   value={color}
-                  checked={this.state.activeColor === color}
-                  onChange={e => this.handleChange('activeColor', e)}
+                  checked={activeColor === color}
+                  onChange={e => this.handleChange('activeColorIndex', i)}
                 />
                 <span style={{ background: color }} />
               </label>
@@ -73,10 +73,7 @@ export default class ezDraw extends React.Component {
             {canvasY}
           </div>
         </header>
-        <Canvas
-          color={this.state.activeColor}
-          mouseCoords={this.state.mouseCoords}
-        />
+        <Canvas color={activeColor} mouseCoords={this.state.mouseCoords} />
       </div>
     )
   }
