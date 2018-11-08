@@ -52,7 +52,7 @@ export default class ezDraw extends React.Component {
               onChange={e => this.handleChange('name', e.target.value)}
             />
           </label>
-          <div className="color-picker">
+          <fieldset className="color-picker">
             {this.props.colors.map((color, i) => (
               <label key={i}>
                 <input
@@ -65,7 +65,7 @@ export default class ezDraw extends React.Component {
                 <span style={{ background: color }} />
               </label>
             ))}
-          </div>
+          </fieldset>
           <div className="header-coords">
             <span className="coord-label">X</span>
             {this.state.mouseCoords[0]}

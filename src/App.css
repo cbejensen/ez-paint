@@ -46,9 +46,8 @@ header {
 
 .color-picker {
   flex: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  border: none;
+  text-align: center;
   padding: 10px;
 }
 .color-picker input {
