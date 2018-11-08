@@ -9,13 +9,11 @@ export default class Canvas extends React.Component {
     }
   }
   componentDidMount() {
-    const ctx = this.canvasRef.current.getContext('2d')
-    ctx.lineJoin = 'round'
-    ctx.lineCap = 'round'
-    ctx.lineWidth = 10
-    this.ctx = ctx
+    this.ctx = this.canvasRef.current.getContext('2d')
+    this.init()
   }
   componentDidUpdate(prevProps, prevState) {
+    this.init()
     if (this.state.draw) {
       this.ctx.strokeStyle = this.props.color
       this.ctx.beginPath()
@@ -23,6 +21,16 @@ export default class Canvas extends React.Component {
       this.ctx.lineTo(this.props.mouseCoords[0], this.props.mouseCoords[1])
       this.ctx.stroke()
     }
+  }
+  init = () => {
+    // if these are only in componentDidMount
+    // for some reason they stop applying if
+    // the viewport is resized.
+    // Moving them here allows them to be
+    // re-triggered on componentDidUpdate
+    this.ctx.lineJoin = 'round'
+    this.ctx.lineCap = 'round'
+    this.ctx.lineWidth = 10
   }
   handleMouseClickChange(draw) {
     this.setState({ draw })
