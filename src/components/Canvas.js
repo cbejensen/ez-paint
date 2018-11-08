@@ -5,28 +5,30 @@ export default class Canvas extends React.Component {
     super(props)
     this.canvasRef = React.createRef()
     this.state = {
-      posX: 0,
-      posY: 0,
       draw: false
     }
   }
   componentDidMount() {
     const ctx = this.canvasRef.current.getContext('2d')
-    ctx.strokeStyle = 'red'
     ctx.lineJoin = 'round'
     ctx.lineCap = 'round'
     ctx.lineWidth = 10
     this.ctx = ctx
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.draw) {
+      this.ctx.strokeStyle = this.props.color
+      this.ctx.beginPath()
+      this.ctx.moveTo(prevProps.mouseCoords[0], prevProps.mouseCoords[1])
+      this.ctx.lineTo(this.props.mouseCoords[0], this.props.mouseCoords[1])
+      this.ctx.stroke()
+    }
   }
   handleMouseClickChange(draw) {
     this.setState({ draw })
   }
   handleMouseMove = e => {
     if (this.state.draw) {
-      this.ctx.beginPath()
-      this.ctx.moveTo(this.state.posX, this.state.posY)
-      this.ctx.lineTo(e.pageX, e.pageY)
-      this.ctx.stroke()
     }
     this.setState({ posX: e.pageX, posY: e.pageY })
   }
@@ -35,29 +37,21 @@ export default class Canvas extends React.Component {
   }
   render() {
     return (
-      <div>
+      <>
         <canvas
           width={window.innerWidth}
           height={window.innerHeight}
           ref={this.canvasRef}
-          onMouseMove={this.handleMouseMove}
           onMouseDown={() => this.handleMouseClickChange(true)}
           onMouseUp={() => this.handleMouseClickChange(false)}
           onMouseOut={() => this.handleMouseClickChange(false)}
-        >
-          Canvas
-        </canvas>
-        <button
-          onClick={this.clearCanvas}
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0
-          }}
-        >
-          clear
-        </button>
-      </div>
+        />
+        {!this.state.draw && (
+          <button className="clear-btn" onClick={this.clearCanvas}>
+            Clear
+          </button>
+        )}
+      </>
     )
   }
 }
