@@ -12,22 +12,20 @@ body {
   font-family: system-ui, 'Helevetica Neue', Arial, sans-serif;
 }
 
-/* .app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-} */
-
 header {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   padding: 10px;
   border-bottom: 1px solid black;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
 }
 
 .header-name {
@@ -42,6 +40,22 @@ header {
   font-weight: bold;
   padding: 5px;
   margin-left: 5px;
+  border-bottom: 1px solid transparent;
+}
+.header-name input:hover {
+  border-bottom: 1px solid gray;
+}
+.header-name input:not(:focus) {
+  cursor: pointer;
+}
+.header-name input:focus {
+  outline: none;
+}
+
+.coord-label {
+  text-transform: uppercase;
+  font-size: 0.5rem;
+  margin-left: 10px;
 }
 
 .color-picker {
@@ -71,17 +85,6 @@ header {
 }
 .color-picker input:checked + span {
   transform: scale(1.5);
-}
-
-.header-coords {
-  flex: 1;
-  min-width: 100px;
-  text-align: right;
-}
-.coord-label {
-  text-transform: uppercase;
-  font-size: 0.5rem;
-  margin-left: 10px;
 }
 
 canvas {

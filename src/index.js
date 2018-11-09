@@ -5,7 +5,22 @@ import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
-  <App colors={['coral', 'aqua', 'lightgreen', 'black']} />,
+  <App
+    colors={[
+      'maroon',
+      'red',
+      'orange',
+      'yellow',
+      'blue',
+      'lightblue',
+      'green',
+      'lightgreen',
+      'purple',
+      'pink',
+      'black',
+      'white'
+    ]}
+  />,
   document.getElementById('root')
 )
 
