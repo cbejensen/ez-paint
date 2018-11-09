@@ -87,6 +87,7 @@ header {
 canvas {
   flex: 1;
   overflow: hidden;
+  cursor: crosshair;
 }
 
 .clear-btn {
