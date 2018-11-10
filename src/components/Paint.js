@@ -1,4 +1,5 @@
 import React from 'react'
+import MouseTracker from './MouseTracker'
 import Name from './Name'
 import Coords from './Coords'
 import ColorPicker from './ColorPicker'
@@ -16,20 +17,11 @@ export default class Paint extends React.Component {
   }
   componentDidMount() {
     this.setDocumentTitle(this.state.name)
-    document.addEventListener('mousemove', this.handleMouseMove)
   }
   componentDidUpdate(prevProps, prevState) {
     if (this.state.name !== prevState.name) {
       this.setDocumentTitle(this.state.name)
     }
-  }
-  componentWillUnmount() {
-    document.removeEventListener('mousemove', this.handleMouseMove)
-  }
-  handleMouseMove = e => {
-    this.setState({
-      mouseCoords: [e.pageX, e.pageY]
-    })
   }
   setDocumentTitle = name => {
     document.title = `EZ Paint - ${name || 'Untitled'}`
@@ -45,23 +37,29 @@ export default class Paint extends React.Component {
     }
     return (
       <div className="app">
-        <header ref={this.headerRef}>
-          <div className="top-bar">
-            <Name
-              name={this.state.name}
-              handleChange={val => this.setState({ name: val })}
-            />
-            {canvasYCoord >= 0 && (
-              <Coords x={this.state.mouseCoords[0]} y={canvasYCoord} />
-            )}
-          </div>
-          <ColorPicker
-            colors={this.props.colors}
-            activeColor={activeColor}
-            handleChange={i => this.setState({ activeColorIndex: i })}
-          />
-        </header>
-        <Canvas color={activeColor} mouseCoords={this.state.mouseCoords} />
+        <MouseTracker>
+          {(mouseX, mouseY) => (
+            <>
+              <header ref={this.headerRef}>
+                <div className="top-bar">
+                  <Name
+                    name={this.state.name}
+                    handleChange={val => this.setState({ name: val })}
+                  />
+                  {canvasYCoord >= 0 && (
+                    <Coords x={this.state.mouseCoords[0]} y={canvasYCoord} />
+                  )}
+                </div>
+                <ColorPicker
+                  colors={this.props.colors}
+                  activeColor={activeColor}
+                  handleChange={i => this.setState({ activeColorIndex: i })}
+                />
+              </header>
+              <Canvas color={activeColor} mouseCoords={[mouseX, mouseY]} />
+            </>
+          )}
+        </MouseTracker>
       </div>
     )
   }
