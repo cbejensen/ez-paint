@@ -45,7 +45,10 @@ export default class Paint extends React.Component {
     }
     return (
       <div className="app">
-        <header ref={this.headerRef}>
+        <header
+          ref={this.headerRef}
+          style={{ borderTop: `10px solid ${activeColor}` }}
+        >
           <div className="top-bar">
             <Name
               name={this.state.name}
