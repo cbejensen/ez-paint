@@ -1,9 +1,11 @@
 import React from 'react'
-import MouseTracker from './MouseTracker'
-import TextInput from './TextInput'
-import Coords from './Coords'
-import Select from './Select'
 import Canvas from './Canvas'
+import ColorPicker from './ColorPicker'
+import Coords from './Coords'
+import MouseTracker from './MouseTracker'
+import Name from './Name'
+import Select from './Select'
+import TextInput from './TextInput'
 
 export default function Paint(props) {
   function setDocTitle(name) {
@@ -15,14 +17,14 @@ export default function Paint(props) {
     <div className="app">
       <MouseTracker>
         {(mouseX, mouseY) => (
-          <Select items={props.colors}>
-            {(activeIndex, setColor) => {
+          <Select>
+            {(activeColorIndex, setColorIndex) => {
               // canvas Y coordinate needs to be adjusted to
               // account for header height
               const mouseYOffset =
                 // make sure we have access to the element
                 headerRef.current ? mouseY - headerRef.current.offsetHeight : 0
-              const activeColor = props.colors[activeIndex]
+              const activeColor = props.colors[activeColorIndex]
               return (
                 <>
                   <header
@@ -31,40 +33,33 @@ export default function Paint(props) {
                   >
                     <div className="top-bar">
                       <TextInput>
-                        {(val, handleChange, handleFocus) => (
-                          <label className="header-name">
-                            <input
-                              value={val}
-                              onChange={e => {
-                                setDocTitle(e.target.value)
-                                handleChange(e)
-                              }}
-                              onClick={handleFocus}
-                              placeholder="Untitled"
+                        {(value, setValue) => {
+                          function updateNameAndTitle(e) {
+                            setValue(e)
+                            setDocTitle(e.target.value)
+                          }
+                          function highlight(e) {
+                            e.target.setSelectionRange(0, e.target.value.length)
+                          }
+                          return (
+                            <Name
+                              value={value}
+                              onChange={updateNameAndTitle}
+                              onClick={highlight}
                             />
-                          </label>
-                        )}
+                          )
+                        }}
                       </TextInput>
                       {mouseYOffset >= 0 && (
                         <Coords x={mouseX} y={mouseYOffset} />
                       )}
                     </div>
 
-                    {/* Color picker */}
-                    <fieldset className="color-picker">
-                      {props.colors.map((color, i) => (
-                        <label key={i}>
-                          <input
-                            name="color"
-                            type="radio"
-                            value={color}
-                            checked={activeColor === color}
-                            onChange={() => setColor(i)}
-                          />
-                          <span style={{ background: color }} />
-                        </label>
-                      ))}
-                    </fieldset>
+                    <ColorPicker
+                      colors={props.colors}
+                      activeColorIndex={activeColorIndex}
+                      setColorIndex={setColorIndex}
+                    />
                   </header>
                   <Canvas color={activeColor} mouseCoords={[mouseX, mouseY]} />
                 </>
