@@ -21,6 +21,6 @@ export default class MouseTracker extends React.Component {
     })
   }
   render() {
-    return this.props.children(this.state.x, this.state.y)
+    return React.Children.only(this.props.children(this.state.x, this.state.y))
   }
 }

@@ -1,66 +1,78 @@
 import React from 'react'
 import MouseTracker from './MouseTracker'
-import Name from './Name'
+import TextInput from './TextInput'
 import Coords from './Coords'
-import ColorPicker from './ColorPicker'
+import Select from './Select'
 import Canvas from './Canvas'
 
-export default class Paint extends React.Component {
-  constructor(props) {
-    super(props)
-    this.headerRef = React.createRef()
-    this.state = {
-      name: '',
-      activeColorIndex: 0,
-      mouseCoords: [0, 0]
-    }
-  }
-  componentDidMount() {
-    this.setDocumentTitle(this.state.name)
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.name !== prevState.name) {
-      this.setDocumentTitle(this.state.name)
-    }
-  }
-  setDocumentTitle = name => {
+export default function Paint(props) {
+  function setDocTitle(name) {
     document.title = `EZ Paint - ${name || 'Untitled'}`
   }
-  render() {
-    const activeColor = this.props.colors[this.state.activeColorIndex]
-    // canvas Y coordinate needs to be adjusted to
-    // account for header height
-    let canvasYCoord = this.state.mouseCoords[1]
-    if (this.headerRef && this.headerRef.current) {
-      // if we have the ref to the header element
-      canvasYCoord -= this.headerRef.current.offsetHeight
-    }
-    return (
-      <div className="app">
-        <MouseTracker>
-          {(mouseX, mouseY) => (
-            <>
-              <header ref={this.headerRef}>
-                <div className="top-bar">
-                  <Name
-                    name={this.state.name}
-                    handleChange={val => this.setState({ name: val })}
-                  />
-                  {canvasYCoord >= 0 && (
-                    <Coords x={this.state.mouseCoords[0]} y={canvasYCoord} />
-                  )}
-                </div>
-                <ColorPicker
-                  colors={this.props.colors}
-                  activeColor={activeColor}
-                  handleChange={i => this.setState({ activeColorIndex: i })}
-                />
-              </header>
-              <Canvas color={activeColor} mouseCoords={[mouseX, mouseY]} />
-            </>
-          )}
-        </MouseTracker>
-      </div>
-    )
-  }
+  setDocTitle()
+  let headerRef = React.createRef()
+  return (
+    <div className="app">
+      <MouseTracker>
+        {(mouseX, mouseY) => (
+          <Select items={props.colors}>
+            {(activeIndex, setColor) => {
+              // canvas Y coordinate needs to be adjusted to
+              // account for header height
+              const mouseYOffset =
+                // make sure we have access to the element
+                headerRef.current ? mouseY - headerRef.current.offsetHeight : 0
+              const activeColor = props.colors[activeIndex]
+              return (
+                <>
+                  <header
+                    ref={headerRef}
+                    style={{ borderTop: `10px solid ${activeColor}` }}
+                  >
+                    <div className="top-bar">
+                      <TextInput>
+                        {(val, handleChange, handleFocus) => (
+                          <label className="header-name">
+                            <input
+                              value={val}
+                              onChange={e => {
+                                setDocTitle(e.target.value)
+                                handleChange(e)
+                              }}
+                              onClick={handleFocus}
+                              placeholder="Untitled"
+                            />
+                          </label>
+                        )}
+                      </TextInput>
+                      {mouseYOffset >= 0 && (
+                        <Coords x={mouseX} y={mouseYOffset} />
+                      )}
+                    </div>
+
+                    {/* Color picker */}
+                    <fieldset className="color-picker">
+                      {props.colors.map((color, i) => (
+                        <label key={i}>
+                          <input
+                            name="color"
+                            type="radio"
+                            value={color}
+                            checked={activeColor === color}
+                            onChange={() => setColor(i)}
+                          />
+                          <span style={{ background: color }} />
+                        </label>
+                      ))}
+                    </fieldset>
+                  </header>
+                  <Canvas color={activeColor} mouseCoords={[mouseX, mouseY]} />
+                </>
+              )
+            }}
+          </Select>
+        )}
+      </MouseTracker>
+    </div>
+  )
 }
