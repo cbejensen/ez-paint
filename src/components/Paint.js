@@ -54,7 +54,6 @@ export default function Paint(props) {
                         <Coords x={mouseX} y={mouseYOffset} />
                       )}
                     </div>
-
                     <ColorPicker
                       colors={props.colors}
                       activeColorIndex={activeColorIndex}
