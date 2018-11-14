@@ -17,10 +17,10 @@ body {
 header {
   display: flex;
   flex-direction: column;
-  position: absolute;
+  /* position: absolute;
   top: 0;
   left: 0;
-  right: 0;
+  right: 0; */
   padding: 10px;
   border-bottom: 1px solid black;
 }
@@ -97,7 +97,7 @@ canvas {
 
 .clear-btn {
   border: 2px solid black;
-  background: none;
+  background: white;
   position: absolute;
   bottom: 10px;
   left: 50%;

@@ -39,9 +39,12 @@ export default class Paint extends React.Component {
     // canvas Y coordinate needs to be adjusted to
     // account for header height
     let canvasYCoord = this.state.mouseCoords[1]
+    let canvasHeight = window.innerHeight
     if (this.headerRef && this.headerRef.current) {
+      let height = this.headerRef.current.offsetHeight
       // if we have the ref to the header element
-      canvasYCoord -= this.headerRef.current.offsetHeight
+      canvasYCoord -= height
+      canvasHeight -= height
     }
     return (
       <div className="app">
@@ -64,7 +67,12 @@ export default class Paint extends React.Component {
             handleChange={i => this.setState({ activeColorIndex: i })}
           />
         </header>
-        <Canvas color={activeColor} mouseCoords={this.state.mouseCoords} />
+        <Canvas
+          color={activeColor}
+          mouseCoords={[this.state.mouseCoords[0], canvasYCoord]}
+          width={window.innerWidth}
+          height={canvasHeight}
+        />
       </div>
     )
   }
