@@ -7,7 +7,7 @@ import Canvas from './Canvas'
 export default function Paint(props) {
   const [name, setName] = useState('')
   const [activeColorIndex, setColorIndex] = useState(0)
-  const [mouseCoords, setMouseCoords] = useState([0, 0])
+  const [mouseCoords, setMouseCoords] = useState(null)
   useEffect(
     () => {
       document.title = `EZ Paint - ${name || 'Untitled'}`
@@ -24,13 +24,12 @@ export default function Paint(props) {
     },
     [mouseCoords]
   )
-  const headerRef = useRef(null)
-  // canvas Y coordinate needs to be adjusted to
-  // account for header height
-  let offsetYCoord = mouseCoords[1]
-  if (headerRef && headerRef.current) {
+  const headerRef = useRef({})
+  // canvas height = window height - top bar
+  let canvasHeight = window.innerHeight
+  if (headerRef.current) {
     // if we have the ref to the header element
-    offsetYCoord -= headerRef.current.offsetHeight
+    canvasHeight -= headerRef.current.offsetHeight
   }
   const activeColor = props.colors[activeColorIndex]
   return (
@@ -41,7 +40,9 @@ export default function Paint(props) {
       >
         <div className="top-bar">
           <Name name={name} handleChange={val => setName(val)} />
-          {offsetYCoord >= 0 && <Coords x={mouseCoords[0]} y={offsetYCoord} />}
+          {mouseCoords !== null && mouseCoords[1] >= 0 && (
+            <Coords x={mouseCoords[0]} y={mouseCoords[1]} />
+          )}
         </div>
         <ColorPicker
           colors={props.colors}
@@ -49,7 +50,14 @@ export default function Paint(props) {
           handleChange={i => setColorIndex(i)}
         />
       </header>
-      <Canvas color={activeColor} mouseCoords={mouseCoords} />
+      {headerRef.current && (
+        <Canvas
+          color={activeColor}
+          mouseCoords={mouseCoords}
+          width={window.innerWidth}
+          height={canvasHeight}
+        />
+      )}
     </div>
   )
 }
