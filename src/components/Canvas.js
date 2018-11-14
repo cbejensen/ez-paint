@@ -47,8 +47,8 @@ export default class Canvas extends React.Component {
     return (
       <>
         <canvas
-          width={window.innerWidth}
-          height={window.innerHeight}
+          width={this.props.width}
+          height={this.props.height}
           ref={this.canvasRef}
           onMouseDown={() => this.handleMouseClickChange(true)}
           onMouseUp={() => this.handleMouseClickChange(false)}

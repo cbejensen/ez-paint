@@ -23,7 +23,9 @@ export default function Paint(props) {
               // account for header height
               const mouseYOffset =
                 // make sure we have access to the element
-                headerRef.current ? mouseY - headerRef.current.offsetHeight : 0
+                headerRef.current
+                  ? mouseY - headerRef.current.offsetHeight
+                  : null
               const activeColor = props.colors[activeColorIndex]
               return (
                 <>
@@ -50,7 +52,7 @@ export default function Paint(props) {
                           )
                         }}
                       </TextInput>
-                      {mouseYOffset >= 0 && (
+                      {mouseYOffset !== null && mouseY >= 0 && (
                         <Coords x={mouseX} y={mouseYOffset} />
                       )}
                     </div>
@@ -60,7 +62,16 @@ export default function Paint(props) {
                       setColorIndex={setColorIndex}
                     />
                   </header>
-                  <Canvas color={activeColor} mouseCoords={[mouseX, mouseY]} />
+                  {headerRef.current && (
+                    <Canvas
+                      width={window.innerWidth}
+                      height={
+                        window.innerHeight - headerRef.current.offsetHeight
+                      }
+                      color={activeColor}
+                      mouseCoords={[mouseX, mouseYOffset]}
+                    />
+                  )}
                 </>
               )
             }}

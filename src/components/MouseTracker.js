@@ -4,8 +4,8 @@ export default class MouseTracker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      x: 0,
-      y: 0
+      x: null,
+      y: null
     }
   }
   componentDidMount() {
