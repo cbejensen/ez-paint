@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Select extends React.Component {
+export default class IndexTracker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {

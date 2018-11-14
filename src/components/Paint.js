@@ -1,11 +1,10 @@
 import React from 'react'
 import Canvas from './Canvas'
 import ColorPicker from './ColorPicker'
+import ControlledInput from './ControlledInput'
 import Coords from './Coords'
+import IndexTracker from './IndexTracker'
 import MouseTracker from './MouseTracker'
-import Name from './Name'
-import Select from './Select'
-import TextInput from './TextInput'
 
 export default function Paint(props) {
   function setDocTitle(name) {
@@ -17,7 +16,7 @@ export default function Paint(props) {
     <div className="app">
       <MouseTracker>
         {(mouseX, mouseY) => (
-          <Select>
+          <IndexTracker>
             {(activeColorIndex, setColorIndex) => {
               // canvas Y coordinate needs to be adjusted to
               // account for header height
@@ -34,24 +33,15 @@ export default function Paint(props) {
                     style={{ borderTop: `10px solid ${activeColor}` }}
                   >
                     <div className="top-bar">
-                      <TextInput>
-                        {(value, setValue) => {
-                          function updateNameAndTitle(e) {
-                            setValue(e)
-                            setDocTitle(e.target.value)
-                          }
-                          function highlight(e) {
+                      <label className="header-name">
+                        <ControlledInput
+                          placeholder="Untitled"
+                          handleChange={e => setDocTitle(e.target.value)}
+                          onClick={e =>
                             e.target.setSelectionRange(0, e.target.value.length)
                           }
-                          return (
-                            <Name
-                              value={value}
-                              onChange={updateNameAndTitle}
-                              onClick={highlight}
-                            />
-                          )
-                        }}
-                      </TextInput>
+                        />
+                      </label>
                       {mouseYOffset !== null && mouseY >= 0 && (
                         <Coords x={mouseX} y={mouseYOffset} />
                       )}
@@ -75,7 +65,7 @@ export default function Paint(props) {
                 </>
               )
             }}
-          </Select>
+          </IndexTracker>
         )}
       </MouseTracker>
     </div>
