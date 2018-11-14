@@ -11,7 +11,7 @@ export default class Paint extends React.Component {
     this.state = {
       name: '',
       activeColorIndex: 0,
-      mouseCoords: [0, 0]
+      mouseCoords: null
     }
   }
   componentDidMount() {
@@ -28,7 +28,7 @@ export default class Paint extends React.Component {
   }
   handleMouseMove = e => {
     this.setState({
-      mouseCoords: [e.pageX, e.pageY]
+      mouseCoords: [e.pageX, e.pageY - this.headerRef.current.offsetHeight]
     })
   }
   setDocumentTitle = name => {
@@ -36,16 +36,6 @@ export default class Paint extends React.Component {
   }
   render() {
     const activeColor = this.props.colors[this.state.activeColorIndex]
-    // canvas Y coordinate needs to be adjusted to
-    // account for header height
-    let canvasYCoord = this.state.mouseCoords[1]
-    let canvasHeight = window.innerHeight
-    if (this.headerRef && this.headerRef.current) {
-      let height = this.headerRef.current.offsetHeight
-      // if we have the ref to the header element
-      canvasYCoord -= height
-      canvasHeight -= height
-    }
     return (
       <div className="app">
         <header
@@ -57,9 +47,10 @@ export default class Paint extends React.Component {
               name={this.state.name}
               handleChange={val => this.setState({ name: val })}
             />
-            {canvasYCoord >= 0 && (
-              <Coords x={this.state.mouseCoords[0]} y={canvasYCoord} />
-            )}
+            {this.state.mouseCoords !== null &&
+              this.state.mouseCoords[1] >= 0 && (
+                <Coords coords={this.state.mouseCoords} />
+              )}
           </div>
           <ColorPicker
             colors={this.props.colors}
@@ -67,12 +58,14 @@ export default class Paint extends React.Component {
             handleChange={i => this.setState({ activeColorIndex: i })}
           />
         </header>
-        <Canvas
-          color={activeColor}
-          mouseCoords={[this.state.mouseCoords[0], canvasYCoord]}
-          width={window.innerWidth}
-          height={canvasHeight}
-        />
+        {this.state.mouseCoords !== null && (
+          <Canvas
+            color={activeColor}
+            mouseCoords={this.state.mouseCoords}
+            width={window.innerWidth}
+            height={window.innerHeight - this.headerRef.current.offsetHeight}
+          />
+        )}
       </div>
     )
   }
