@@ -58,7 +58,7 @@ export default class Paint extends React.Component {
             handleChange={i => this.setState({ activeColorIndex: i })}
           />
         </header>
-        {this.state.mouseCoords !== null && (
+        {this.headerRef.current && (
           <Canvas
             color={activeColor}
             mouseCoords={this.state.mouseCoords}
