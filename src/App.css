@@ -100,7 +100,7 @@ canvas {
 
 .clear-btn {
   border: 2px solid black;
-  background: none;
+  background: white;
   position: absolute;
   bottom: 10px;
   left: 50%;
