@@ -17,7 +17,7 @@ export default function Paint(props) {
   useEffect(
     () => {
       function handleMouseMove(e) {
-        setMouseCoords([e.pageX, e.pageY])
+        setMouseCoords([e.pageX, e.pageY - headerRef.current.offsetHeight])
       }
       document.addEventListener('mousemove', handleMouseMove)
       return () => document.removeEventListener('mousemove', handleMouseMove)
