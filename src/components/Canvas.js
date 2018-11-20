@@ -13,12 +13,12 @@ export default class Canvas extends React.Component {
     this.init()
   }
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.draw && prevProps.mouseCoords) {
+    if (this.state.draw && prevProps.mouseX && prevProps.mouseY) {
       this.init()
       this.ctx.strokeStyle = this.props.color
       this.ctx.beginPath()
-      this.ctx.moveTo(prevProps.mouseCoords[0], prevProps.mouseCoords[1])
-      this.ctx.lineTo(this.props.mouseCoords[0], this.props.mouseCoords[1])
+      this.ctx.moveTo(prevProps.mouseX, prevProps.mouseY)
+      this.ctx.lineTo(this.props.mouseX, this.props.mouseY)
       this.ctx.stroke()
     }
   }
