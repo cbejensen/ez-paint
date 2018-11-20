@@ -11,7 +11,8 @@ export default class Paint extends React.Component {
     this.state = {
       name: '',
       activeColorIndex: 0,
-      mouseCoords: null
+      mouseX: null,
+      mouseY: null
     }
   }
   componentDidMount() {
@@ -28,7 +29,8 @@ export default class Paint extends React.Component {
   }
   handleMouseMove = e => {
     this.setState({
-      mouseCoords: [e.pageX, e.pageY - this.headerRef.current.offsetHeight]
+      mouseX: e.pageX,
+      mouseY: e.pageY - this.headerRef.current.offsetHeight
     })
   }
   setDocumentTitle = name => {
@@ -47,10 +49,9 @@ export default class Paint extends React.Component {
               name={this.state.name}
               handleChange={val => this.setState({ name: val })}
             />
-            {this.state.mouseCoords !== null &&
-              this.state.mouseCoords[1] >= 0 && (
-                <Coords coords={this.state.mouseCoords} />
-              )}
+            {this.state.mouseY >= 0 && (
+              <Coords x={this.state.mouseX} y={this.state.mouseY} />
+            )}
           </div>
           <ColorPicker
             colors={this.props.colors}
@@ -61,7 +62,8 @@ export default class Paint extends React.Component {
         {this.headerRef.current && (
           <Canvas
             color={activeColor}
-            mouseCoords={this.state.mouseCoords}
+            mouseX={this.state.mouseX}
+            mouseY={this.state.mouseY}
             width={window.innerWidth}
             height={window.innerHeight - this.headerRef.current.offsetHeight}
           />

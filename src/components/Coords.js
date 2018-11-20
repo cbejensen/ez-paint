@@ -4,9 +4,9 @@ export default function Coords(props) {
   return (
     <div className="header-coords">
       <span className="coord-label">X</span>
-      {props.coords[0]}
+      {props.x}
       <span className="coord-label">Y</span>
-      {props.coords[1]}
+      {props.y}
     </div>
   )
 }
