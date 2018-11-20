@@ -4,6 +4,18 @@ import Coords from './Coords'
 import ColorPicker from './ColorPicker'
 import Canvas from './Canvas'
 
+// export default function Paint(props) {
+//   return (
+//     <div className="app">
+//       <header>
+//         <div className="top-bar">
+
+//         </div>
+//       </header>
+//     </div>
+//   )
+// }
+
 export default class Paint extends React.Component {
   constructor(props) {
     super(props)
