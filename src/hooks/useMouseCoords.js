@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export function useMouseCoords() {
+export default function useMouseCoords() {
   const [mouseCoords, setMouseCoords] = useState([null, null])
   useEffect(() => {
     function handleMouseMove(e) {
