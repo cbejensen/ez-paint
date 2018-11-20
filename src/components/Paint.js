@@ -9,9 +9,12 @@ import Canvas from './Canvas'
 //     <div className="app">
 //       <header>
 //         <div className="top-bar">
-
+//           {/* name */}
+//           {/* coords */}
 //         </div>
+//         {/* colors */}
 //       </header>
+//       {/* canvas */}
 //     </div>
 //   )
 // }
