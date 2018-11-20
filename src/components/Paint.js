@@ -7,24 +7,28 @@ import { useMouseCoords } from '../hooks'
 
 export default function Paint(props) {
   const [name, setName] = useState('')
-
-  const [activeColorIndex, setColorIndex] = useState(0)
-  const activeColor = props.colors[activeColorIndex]
-
-  const headerRef = useRef(null)
-
-  const [mouseX, mouseY] = useMouseCoords()
-  const canvasY =
-    headerRef.current && mouseY
-      ? mouseY - headerRef.current.offsetHeight
-      : mouseY
-
   useEffect(
     () => {
       document.title = `EZ Paint - ${name || 'Untitled'}`
     },
     [name]
   )
+
+  const [activeColorIndex, setColorIndex] = useState(0)
+  const activeColor = props.colors[activeColorIndex]
+
+  const headerRef = useRef(null)
+
+  const [[mouseX, mouseY], setMouseCoords] = useState([null, null])
+  useEffect(() => {
+    const handleMouseMove = e => {
+      setMouseCoords([e.pageX, e.pageY])
+    }
+    document.addEventListener('mousemove', handleMouseMove)
+    return () => document.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+  const canvasY =
+    headerRef.current && mouseY ? mouseY - headerRef.current.offsetHeight : null
 
   return (
     <div className="app">
